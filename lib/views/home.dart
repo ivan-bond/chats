@@ -1,5 +1,6 @@
 import 'package:chats/services/auth.dart';
 import 'package:chats/services/database.dart';
+import 'package:chats/views/chatscreen.dart';
 import 'package:chats/views/signin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,52 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
+  Widget searchListUserTile({String? email, name, profileUrl, username}) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChatScreen(username, name)));
+      },
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(40),
+            child: Image.network(
+              profileUrl,
+              height: 50,
+              width: 50,
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                name,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'EBGaramond',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                email!,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'EBGaramond',
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
   Widget searchUsersList() {
     return StreamBuilder(
       stream: usersStream,
@@ -31,10 +78,15 @@ class _HomeState extends State<Home> {
         return snapshot.hasData
             ? ListView.builder(
                 itemCount: (snapshot.data! as QuerySnapshot).docs.length,
+                shrinkWrap: true,
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds =
                       (snapshot.data! as QuerySnapshot).docs[index];
-                  return Image.network(ds["imgUrl"]);
+                  return searchListUserTile(
+                      profileUrl: ds["imgUrl"],
+                      name: ds["name"],
+                      email: ds["email"],
+                      username: ds["username"]);
                 },
               )
             : Center(
@@ -42,6 +94,10 @@ class _HomeState extends State<Home> {
               );
       },
     );
+  }
+
+  Widget chatRoomsList() {
+    return Container();
   }
 
   @override
@@ -116,7 +172,7 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            searchUsersList()
+            isSearching ? searchUsersList() : chatRoomsList()
           ],
         ),
       ),

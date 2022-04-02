@@ -29,42 +29,48 @@ class _SignInState extends State<SignIn> {
       )), */
 
         body: Center(
-            child: Material(
-          color: Colors.white,
-          elevation: 8,
-          borderRadius: BorderRadius.circular(28),
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          child: InkWell(
-            splashColor: Colors.black54,
-            onTap: () {
-              AuthMethods().signInWithGoogle(context);
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Ink.image(
-                  image: AssetImage('assets/google_icon2.png'),
-                  height: 50,
-                  width: 50,
-                  fit: BoxFit.cover,
+          child: Align(
+              alignment: Alignment(0, 0.5),
+              child: Material(
+                color: Colors.white,
+                elevation: 8,
+                borderRadius: BorderRadius.circular(28),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: InkWell(
+                  splashColor: Colors.black54,
+                  onTap: () {
+                    AuthMethods().signInWithGoogle(context);
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Ink.image(
+                        image: AssetImage('assets/google_icon2.png'),
+                        height: 50,
+                        width: 50,
+                        fit: BoxFit.cover,
+                      ),
+                      // ignore: prefer_const_constructors
+                      SizedBox(
+                        width: 6,
+                      ),
+                      const Text(
+                        'Sign In with your Google account',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'EBGaramond'),
+                      ),
+                      // ignore: prefer_const_constructors
+                      SizedBox(
+                        width: 10,
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(
-                  width: 6,
-                ),
-                Text(
-                  'Sign In with your Google account',
-                  style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontFamily: 'EBGaramond'),
-                ),
-                SizedBox(
-                  width: 6,
-                ),
-              ],
-            ),
-          ),
-        )));
+              )),
+        ));
   }
 }
