@@ -65,10 +65,11 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(children: [
                 Expanded(
                     child: TextField(
+                  cursorColor: Colors.pink,
                   style: TextStyle(
                     fontFamily: 'EBGaramond',
                     color: Colors.white,
-                    fontSize: 18,
+                    fontSize: 20,
                   ),
                   decoration: InputDecoration(
                       border: InputBorder.none,
@@ -76,7 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       hintStyle: TextStyle(
                         color: Colors.white,
                         fontFamily: 'EBGaramond',
-                        fontSize: 18,
+                        fontSize: 20,
                       )),
                 )),
                 Icon(

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: "chats",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+        primarySwatch: Colors.pink,
       ),
       home: FutureBuilder(
         future: AuthMethods().getCurrentUser(),
