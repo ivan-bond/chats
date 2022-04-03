@@ -1,5 +1,7 @@
 import 'package:chats/helperfunctions/sharedpref_helper.dart';
+import 'package:chats/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatWithUsername, name;
@@ -12,6 +14,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   late String chatRoomId, messageId = "";
   late String myName, myProfilePic, myUserName, myEmail;
+  TextEditingController messageTextEdittingController = TextEditingController();
 
   getMyInfoFromSharedPreference() async {
     myName = (await SharedPreferenceHelper().getDisplayName())!;
@@ -27,6 +30,47 @@ class _ChatScreenState extends State<ChatScreen> {
       return "$b\_$a";
     } else {
       return "$a\_$b";
+    }
+  }
+
+  addMessage(bool sendClicked) {
+    if (messageTextEdittingController.text != "") {
+      String message = messageTextEdittingController.text;
+      late Map<String, dynamic> lastMessageInfoMap;
+
+      var lastMessageTs = DateTime.now();
+
+      Map<String, dynamic> messageInfoMap = {
+        "message": message,
+        "sendBy": myUserName,
+        "ts": lastMessageTs,
+        "imgUrl": myProfilePic
+      };
+
+      //messageId
+      if (messageId == "") {
+        messageId = randomAlphaNumeric(12);
+      }
+
+      DatabaseMethods()
+          .addMessage(chatRoomId, messageId, messageInfoMap)
+          .then((value) {
+        lastMessageInfoMap = {
+          "lastmessage": message,
+          "lastMessageSendTs": lastMessageTs,
+          "lastMessageSendBy": myUserName,
+        };
+      });
+
+      DatabaseMethods().updateLastMessageSend(chatRoomId, lastMessageInfoMap);
+
+      if (sendClicked) {
+        // remove the text in the message input field
+        messageTextEdittingController.text = "";
+
+        // make message id blank to get regenerated on next message send
+        messageId = "";
+      }
     }
   }
 
@@ -46,6 +90,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey,
       appBar: AppBar(
           title: Text(
         widget.name,
@@ -57,7 +102,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Container(
             alignment: Alignment(0, 0.95),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 color: Colors.black.withOpacity(0.5),
@@ -65,6 +110,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(children: [
                 Expanded(
                     child: TextField(
+                  controller: messageTextEdittingController,
                   cursorColor: Colors.pink,
                   style: TextStyle(
                     fontFamily: 'EBGaramond',
