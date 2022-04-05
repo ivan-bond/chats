@@ -1,11 +1,20 @@
+import 'package:chats/helperfunctions/sharedpref_helper.dart';
 import 'package:chats/services/auth.dart';
 import 'package:chats/services/database.dart';
 import 'package:chats/views/chatscreen.dart';
 import 'package:chats/views/signin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
+  /*ChatScreen test = new ChatScreen();
+  
+  String me = ChatScreen.returnMyName(ChatScreen c);  */
+
+  final String name;
+  Home(this.name);
+
   @override
   State<Home> createState() => _HomeState();
 }
@@ -100,11 +109,26 @@ class _HomeState extends State<Home> {
     return Container();
   }
 
+  /*String? _me;
+
+  Future<void> getMyName() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? me = await prefs.getString('name');
+    //final String? me = await SharedPreferenceHelper().getDisplayName();
+    print(me);
+
+    setState(() {
+      _me = me;
+    });
+  } */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey,
       appBar: AppBar(
-        title: Text("chats"),
+        title: /*_me != null ? Text('${_me!}') : Text("chats")*/ Text(
+            widget.name),
         actions: [
           InkWell(
             onTap: () {
@@ -147,7 +171,7 @@ class _HomeState extends State<Home> {
                     padding: EdgeInsets.symmetric(horizontal: 8),
                     decoration: BoxDecoration(
                         border: Border.all(
-                            color: Colors.grey,
+                            color: Colors.white,
                             width: 2.0,
                             style: BorderStyle.solid),
                         borderRadius: BorderRadius.circular(30)),
@@ -155,9 +179,21 @@ class _HomeState extends State<Home> {
                       children: [
                         Expanded(
                             child: TextField(
+                          cursorColor: Colors.pink,
                           controller: searchUsernameEditingConroller,
+                          style: TextStyle(
+                            fontFamily: 'EBGaramond',
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
                           decoration: InputDecoration(
-                              border: InputBorder.none, hintText: "username"),
+                              border: InputBorder.none,
+                              hintText: "username",
+                              hintStyle: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'EBGaramond',
+                                fontSize: 20,
+                              )),
                         )),
                         GestureDetector(
                             onTap: () {
@@ -165,7 +201,10 @@ class _HomeState extends State<Home> {
                                 onSearchButtonClick();
                               }
                             },
-                            child: Icon(Icons.search))
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.white,
+                            ))
                       ],
                     ),
                   ),

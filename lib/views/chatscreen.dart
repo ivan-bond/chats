@@ -7,6 +7,10 @@ class ChatScreen extends StatefulWidget {
   final String chatWithUsername, name;
   ChatScreen(this.chatWithUsername, this.name);
 
+  /* static String returnMyName(ChatScreen c) {
+    return c.name;
+  } */
+
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }

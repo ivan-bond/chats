@@ -1,5 +1,6 @@
 import 'package:chats/helperfunctions/sharedpref_helper.dart';
 import 'package:chats/services/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -19,6 +20,8 @@ class AuthMethods {
     prefs.clear();
     await auth.signOut();
   }
+
+  var myName;
 
   signInWithGoogle(BuildContext context) async {
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -41,6 +44,7 @@ class AuthMethods {
 
     var email = userDetails.email;
     var displayName = userDetails.displayName;
+    myName = displayName!;
     var photoURL = userDetails.photoURL;
 
     if (result != null) {
@@ -60,8 +64,17 @@ class AuthMethods {
           .addUserInfoToDB(userDetails.uid, userInfoMap)
           .then((value) {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Home()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => Home(
+                    /*userInfoMap.toString() displayName*/ "Hello, " +
+                        displayName.toString() +
+                        " 😁")));
       });
     }
+  }
+
+  outputMyName() {
+    return myName;
   }
 }

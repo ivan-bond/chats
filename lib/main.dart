@@ -1,6 +1,7 @@
 import 'package:chats/services/auth.dart';
 import 'package:chats/views/home.dart';
 import 'package:chats/views/signin.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -11,6 +12,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  //AuthMethods me = new AuthMethods();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,7 +26,10 @@ class MyApp extends StatelessWidget {
         future: AuthMethods().getCurrentUser(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
-            return Home();
+            //DocumentSnapshot me = (snapshot.data! as QuerySnapshot).docs[3];
+            return Home(/*me.toString() me.getCurrentUser()*/ AuthMethods()
+                .outputMyName()
+                .toString());
           } else {
             return SignIn();
           }
