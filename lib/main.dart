@@ -12,8 +12,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  //AuthMethods me = new AuthMethods();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,10 +24,7 @@ class MyApp extends StatelessWidget {
         future: AuthMethods().getCurrentUser(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
-            //DocumentSnapshot me = (snapshot.data! as QuerySnapshot).docs[3];
-            return Home(/*me.toString() me.getCurrentUser()*/ AuthMethods()
-                .outputMyName()
-                .toString());
+            return Home();
           } else {
             return SignIn();
           }

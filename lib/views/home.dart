@@ -8,12 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
-  /*ChatScreen test = new ChatScreen();
-  
-  String me = ChatScreen.returnMyName(ChatScreen c);  */
-
-  final String name;
-  Home(this.name);
+  //final String name;
+  //Home(this.name);
 
   @override
   State<Home> createState() => _HomeState();
@@ -53,7 +49,7 @@ class _HomeState extends State<Home> {
   Widget searchListUserTile({String? email, name, profileUrl, username}) {
     return GestureDetector(
       onTap: () {
-        var chatRoomId = getChatRoomIdByUsernames(myUserName, username);
+        var chatRoomId = getChatRoomIdByUsernames(myUserName!, username);
         Map<String, dynamic> chatRoomInfoMap = {
           "users": [myUserName, username]
         };
@@ -138,13 +134,25 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
+  String greeting() {
+    var now = DateTime.now();
+    int time = now.hour.toInt();
+
+    if (time < 11 && time > 5) {
+      return "Good Morning. 🌅";
+    } else if (time > 11 && time < 18) {
+      return "Have a nice day. 🌞";
+    } else {
+      return "Good night. ☄️";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
-        title: /*_me != null ? Text('${_me!}') : Text("chats")*/ Text(
-            widget.name),
+        title: Text(greeting()),
         actions: [
           InkWell(
             onTap: () {
@@ -197,14 +205,17 @@ class _HomeState extends State<Home> {
                             child: TextField(
                           cursorColor: Colors.pink,
                           controller: searchUsernameEditingConroller,
+                          // ignore: prefer_const_constructors
                           style: TextStyle(
                             fontFamily: 'EBGaramond',
                             color: Colors.white,
                             fontSize: 20,
                           ),
+                          // ignore: prefer_const_constructors
                           decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: "username",
+                              // ignore: prefer_const_constructors
                               hintStyle: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'EBGaramond',
@@ -217,6 +228,7 @@ class _HomeState extends State<Home> {
                                 onSearchButtonClick();
                               }
                             },
+                            // ignore: prefer_const_constructors
                             child: Icon(
                               Icons.search,
                               color: Colors.white,

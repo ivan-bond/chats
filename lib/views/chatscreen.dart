@@ -27,7 +27,6 @@ class _ChatScreenState extends State<ChatScreen> {
     myProfilePic = (await SharedPreferenceHelper().getUserProfileUrl())!;
     myUserName = (await SharedPreferenceHelper().getUserName())!;
     myEmail = (await SharedPreferenceHelper().getUserEmail())!;
-
     chatRoomId = getChatRoomIdByUsernames(widget.chatWithUsername, widget.name);
   }
 

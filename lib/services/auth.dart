@@ -66,12 +66,7 @@ class AuthMethods {
           .addUserInfoToDB(userDetails.uid, userInfoMap)
           .then((value) {
         Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Home(
-                    /*userInfoMap.toString() displayName*/ "What's up " +
-                        displayName.toString() +
-                        " 😁")));
+            context, MaterialPageRoute(builder: (context) => Home()));
       });
     }
   }
