@@ -78,7 +78,7 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  Widget chatMessageTile(String message, bool sendByMe) {
+  /* Widget chatMessageTile(String message, bool sendByMe) {
     return Row(
         mainAxisAlignment:
             sendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
@@ -92,11 +92,36 @@ class _ChatScreenState extends State<ChatScreen> {
             padding: EdgeInsets.all(16),
             child: Text(
               message,
+              textWidthBasis: TextWidthBasis.longestLine,
               style: TextStyle(
                   fontFamily: 'EBGaramond', fontWeight: FontWeight.bold),
             ),
           ),
         ]);
+  } */
+
+  Widget chatMessageTile(String message, bool sendByMe) {
+    return SafeArea(
+      child: Align(
+        alignment: sendByMe ? Alignment.bottomRight : Alignment.bottomLeft,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: sendByMe ? Colors.white70 : Colors.white54,
+          ),
+          padding: EdgeInsets.all(16),
+          child: Text(
+            message,
+            textWidthBasis: TextWidthBasis.longestLine,
+            style: TextStyle(
+                fontFamily: 'EBGaramond',
+                fontWeight: FontWeight.bold,
+                fontSize: 18),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget chatMessages() {
