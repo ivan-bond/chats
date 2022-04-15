@@ -52,6 +52,8 @@ class AuthMethods {
       SharedPreferenceHelper().saveUserId(userDetails.uid);
       SharedPreferenceHelper().saveDisplayName(displayName!);
       SharedPreferenceHelper().saveUserProfileUrl(photoURL!);
+      SharedPreferenceHelper()
+          .saveUserName(userDetails.email!.replaceAll("@gmail.com", ""));
 
       Map<String, dynamic> userInfoMap = {
         "email": userDetails.email,
@@ -67,7 +69,7 @@ class AuthMethods {
             context,
             MaterialPageRoute(
                 builder: (context) => Home(
-                    /*userInfoMap.toString() displayName*/ "Hello, " +
+                    /*userInfoMap.toString() displayName*/ "What's up " +
                         displayName.toString() +
                         " 😁")));
       });

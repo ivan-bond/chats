@@ -2,6 +2,7 @@ import 'package:chats/helperfunctions/sharedpref_helper.dart';
 import 'package:chats/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatWithUsername, name;
@@ -19,6 +20,7 @@ class _ChatScreenState extends State<ChatScreen> {
   late String chatRoomId, messageId = "";
   late String myName, myProfilePic, myUserName, myEmail;
   TextEditingController messageTextEdittingController = TextEditingController();
+  Stream? messageStream;
 
   getMyInfoFromSharedPreference() async {
     myName = (await SharedPreferenceHelper().getDisplayName())!;
@@ -40,7 +42,7 @@ class _ChatScreenState extends State<ChatScreen> {
   addMessage(bool sendClicked) {
     if (messageTextEdittingController.text != "") {
       String message = messageTextEdittingController.text;
-      late Map<String, dynamic> lastMessageInfoMap;
+      Map<String, dynamic> lastMessageInfoMap;
 
       var lastMessageTs = DateTime.now();
 
@@ -56,15 +58,13 @@ class _ChatScreenState extends State<ChatScreen> {
         messageId = randomAlphaNumeric(12);
       }
 
-      DatabaseMethods()
-          .addMessage(chatRoomId, messageId, messageInfoMap)
-          .then((value) {
-        lastMessageInfoMap = {
-          "lastmessage": message,
-          "lastMessageSendTs": lastMessageTs,
-          "lastMessageSendBy": myUserName,
-        };
-      });
+      DatabaseMethods().addMessage(chatRoomId, messageId, messageInfoMap);
+
+      lastMessageInfoMap = {
+        "lastmessage": message,
+        "lastMessageSendTs": lastMessageTs,
+        "lastMessageSendBy": myUserName,
+      };
 
       DatabaseMethods().updateLastMessageSend(chatRoomId, lastMessageInfoMap);
 
@@ -78,7 +78,51 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  getAndSetMessages() async {}
+  Widget chatMessageTile(String message, bool sendByMe) {
+    return Row(
+        mainAxisAlignment:
+            sendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: sendByMe ? Colors.white70 : Colors.white54,
+            ),
+            padding: EdgeInsets.all(16),
+            child: Text(
+              message,
+              style: TextStyle(
+                  fontFamily: 'EBGaramond', fontWeight: FontWeight.bold),
+            ),
+          ),
+        ]);
+  }
+
+  Widget chatMessages() {
+    return StreamBuilder(
+      stream: messageStream,
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+                padding: EdgeInsets.only(bottom: 90, top: 16),
+                itemCount: (snapshot.data! as QuerySnapshot).docs.length,
+                reverse: true,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot ds =
+                      (snapshot.data! as QuerySnapshot).docs[index];
+                  return chatMessageTile(
+                      ds["message"], myUserName == ds["sendBy"]);
+                })
+            : Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  getAndSetMessages() async {
+    messageStream = await DatabaseMethods().getChatRoomMessages(chatRoomId);
+    setState(() {});
+  }
 
   doThisOnLaunch() async {
     await getMyInfoFromSharedPreference();
@@ -103,6 +147,7 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Container(
           child: Stack(
         children: [
+          chatMessages(),
           Container(
             alignment: Alignment(0, 0.95),
             child: Container(
@@ -115,6 +160,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 Expanded(
                     child: TextField(
                   controller: messageTextEdittingController,
+                  onChanged: (value) {
+                    addMessage(false);
+                  },
                   cursorColor: Colors.pink,
                   style: TextStyle(
                     fontFamily: 'EBGaramond',
@@ -130,9 +178,14 @@ class _ChatScreenState extends State<ChatScreen> {
                         fontSize: 20,
                       )),
                 )),
-                Icon(
-                  Icons.send,
-                  color: Colors.white,
+                GestureDetector(
+                  onTap: () {
+                    addMessage(true);
+                  },
+                  child: Icon(
+                    Icons.send,
+                    color: Colors.white,
+                  ),
                 ),
               ]),
             ),
