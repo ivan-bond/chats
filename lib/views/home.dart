@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ChatScreen(username, name)));
+                builder: (context) => ChatScreen(username, name, profileUrl)));
       },
       child: Row(
         children: [
@@ -83,6 +83,7 @@ class _HomeState extends State<Home> {
                   fontSize: 20,
                   fontFamily: 'EBGaramond',
                   fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
               Text(
@@ -90,6 +91,7 @@ class _HomeState extends State<Home> {
                 style: TextStyle(
                   fontSize: 14,
                   fontFamily: 'EBGaramond',
+                  color: Colors.white,
                 ),
               ),
             ],
@@ -143,16 +145,23 @@ class _HomeState extends State<Home> {
     } else if (time > 11 && time < 18) {
       return "Have a nice day. 🌞";
     } else {
-      return "Good night. ☄️";
+      return "Good night. 🌜";
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Color.fromARGB(255, 43, 43, 43),
       appBar: AppBar(
-        title: Text(greeting()),
+        backgroundColor: Color.fromARGB(255, 43, 43, 43),
+        title: Text(
+          greeting(),
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontFamily: 'EBGaramond',
+              color: Colors.white),
+        ),
         actions: [
           InkWell(
             onTap: () {
@@ -162,7 +171,7 @@ class _HomeState extends State<Home> {
               });
             },
             child: Container(
-              child: Icon(Icons.exit_to_app),
+              child: Icon(Icons.exit_to_app, color: Colors.white),
               padding: EdgeInsets.symmetric(horizontal: 16),
             ),
           ),

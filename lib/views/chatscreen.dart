@@ -5,8 +5,8 @@ import 'package:random_string/random_string.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatefulWidget {
-  final String chatWithUsername, name;
-  ChatScreen(this.chatWithUsername, this.name);
+  final String chatWithUsername, name, profileUrl;
+  ChatScreen(this.chatWithUsername, this.name, this.profileUrl);
 
   /* static String returnMyName(ChatScreen c) {
     return c.name;
@@ -107,7 +107,9 @@ class _ChatScreenState extends State<ChatScreen> {
           margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: sendByMe ? Colors.white70 : Colors.white54,
+            color: sendByMe
+                ? Color.fromARGB(255, 96, 39, 176)
+                : Color.fromARGB(255, 43, 43, 43),
           ),
           padding: EdgeInsets.all(16),
           child: Text(
@@ -116,7 +118,8 @@ class _ChatScreenState extends State<ChatScreen> {
             style: TextStyle(
                 fontFamily: 'EBGaramond',
                 fontWeight: FontWeight.bold,
-                fontSize: 18),
+                fontSize: 18,
+                color: Colors.white),
           ),
         ),
       ),
@@ -162,12 +165,33 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-          title: Text(
-        widget.name,
-        style: TextStyle(fontFamily: 'EBGaramond', fontWeight: FontWeight.bold),
-      )),
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: Color.fromARGB(255, 43, 43, 43),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: Image.network(
+                  widget.profileUrl,
+                  height: 45,
+                  width: 45,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  widget.name,
+                  style: TextStyle(
+                      fontFamily: 'EBGaramond',
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              )
+            ],
+          )),
       body: Container(
           child: Stack(
         children: [
@@ -178,7 +202,7 @@ class _ChatScreenState extends State<ChatScreen> {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                color: Colors.black.withOpacity(0.5),
+                color: Color.fromARGB(255, 43, 43, 43),
               ),
               child: Row(children: [
                 Expanded(
@@ -187,7 +211,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   onChanged: (value) {
                     addMessage(false);
                   },
-                  cursorColor: Colors.pink,
+                  cursorColor: Color.fromARGB(255, 96, 39, 176),
                   style: TextStyle(
                     fontFamily: 'EBGaramond',
                     color: Colors.white,

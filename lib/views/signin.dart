@@ -10,7 +10,14 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("chats")),
+        backgroundColor: Color.fromARGB(255, 43, 43, 43),
+        appBar: AppBar(
+            title: Text("chats 💬",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'EBGaramond',
+                    color: Colors.white)),
+            backgroundColor: Color.fromARGB(255, 43, 43, 43)),
         /* body: Center(
           child: GestureDetector(
         onTap: () {
