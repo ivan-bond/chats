@@ -3,7 +3,7 @@
    <application
         android:label="chats"
         android:name="androidx.multidex.MultiDexApplication"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/logo_small_icon_only">
         <activity
             android:name=".MainActivity"
             android:exported="true"

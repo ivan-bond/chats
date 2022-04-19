@@ -192,7 +192,10 @@ class _HomeState extends State<Home> {
                         },
                         child: Padding(
                             padding: EdgeInsets.only(right: 12),
-                            child: Icon(Icons.arrow_back)),
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            )),
                       )
                     : Container(),
                 SizedBox(

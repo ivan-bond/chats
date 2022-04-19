@@ -11,13 +11,7 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 43, 43, 43),
-        appBar: AppBar(
-            title: Text("chats 💬",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'EBGaramond',
-                    color: Colors.white)),
-            backgroundColor: Color.fromARGB(255, 43, 43, 43)),
+
         /* body: Center(
           child: GestureDetector(
         onTap: () {
@@ -36,48 +30,61 @@ class _SignInState extends State<SignIn> {
       )), */
 
         body: Center(
-          child: Align(
-              alignment: Alignment(0, 0.5),
-              child: Material(
-                color: Colors.white,
-                elevation: 8,
-                borderRadius: BorderRadius.circular(28),
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: InkWell(
-                  splashColor: Colors.black54,
-                  onTap: () {
-                    AuthMethods().signInWithGoogle(context);
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Ink.image(
-                        image: AssetImage('assets/google_icon2.png'),
-                        height: 50,
-                        width: 50,
-                        fit: BoxFit.cover,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/logo_large.png',
+                height: 200.0,
+                fit: BoxFit.cover,
+              ),
+              SizedBox(
+                height: 150,
+              ),
+              Align(
+                  alignment: Alignment(0, 0.5),
+                  child: Material(
+                    color: Colors.white,
+                    elevation: 8,
+                    borderRadius: BorderRadius.circular(28),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: InkWell(
+                      splashColor: Colors.black54,
+                      onTap: () {
+                        AuthMethods().signInWithGoogle(context);
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Ink.image(
+                            image: AssetImage('assets/google_icon2.png'),
+                            height: 50,
+                            width: 50,
+                            fit: BoxFit.cover,
+                          ),
+                          // ignore: prefer_const_constructors
+                          SizedBox(
+                            width: 6,
+                          ),
+                          const Text(
+                            'Sign In with your Google account',
+                            style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'EBGaramond'),
+                          ),
+                          // ignore: prefer_const_constructors
+                          SizedBox(
+                            width: 10,
+                          ),
+                        ],
                       ),
-                      // ignore: prefer_const_constructors
-                      SizedBox(
-                        width: 6,
-                      ),
-                      const Text(
-                        'Sign In with your Google account',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'EBGaramond'),
-                      ),
-                      // ignore: prefer_const_constructors
-                      SizedBox(
-                        width: 10,
-                      ),
-                    ],
-                  ),
-                ),
-              )),
+                    ),
+                  )),
+            ],
+          ),
         ));
   }
 }

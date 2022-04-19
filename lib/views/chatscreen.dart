@@ -192,8 +192,7 @@ class _ChatScreenState extends State<ChatScreen> {
               )
             ],
           )),
-      body: Container(
-          child: Stack(
+      body: Stack(
         children: [
           chatMessages(),
           Container(
@@ -226,6 +225,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         fontSize: 20,
                       )),
                 )),
+                SizedBox(
+                  width: 15,
+                ),
                 GestureDetector(
                   onTap: () {
                     addMessage(true);
@@ -239,7 +241,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           )
         ],
-      )),
+      ),
     );
   }
 }
